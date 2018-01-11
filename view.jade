@@ -1,0 +1,34 @@
+template(name='layout')
+	+menu
+	+yield
+
+template(name='menu')
+	.navbar-fixed: nav.green: .nav-wrapper
+		ul.left.hide-on-med-and-down
+			li: a Beranda
+			li: a Tentang
+		a.brand-logo.center DISLHK
+		ul.right
+			li: a Login
+		ul.fixed.side-nav
+			li.grey.lighten-2: a: b Admin Menu
+			li: ul.collapsible: li
+				each list
+					.collapsible-header: .black-text= startCase(grup)
+					a.collapsible-body(href='/peta/{{grup}}/{{item}}')= startCase(item)
+
+template(name='beranda'): .container
+	h5 Beranda
+
+template(name='peta'): #peta
+
+template(name='upload'): .container
+	.file-field.input-field
+		.btn
+			span Unggah Peta
+			input(type='file')
+		.file-path-wrapper
+			input.file-path.validate(
+				type='text'
+				placeholder='Unggah geojson'
+			)
