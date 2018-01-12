@@ -8,5 +8,11 @@ if Meteor.isServer
 			coll[name].upsert selector, modifier
 
 		list: ->
-			_.map coll.geojsons.find().fetch(), (i) ->
+			map = _.map coll.geojsons.find().fetch(), (i) ->
 				_.pick i, ['grup', 'item']
+			arr = []
+			for key, val of _.groupBy(map, 'grup')
+				arr.push
+					grup: key
+					items: _.map val, (j) -> j.item
+			arr

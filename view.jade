@@ -13,9 +13,10 @@ template(name='menu')
 		ul.fixed.side-nav
 			li.grey.lighten-2: a: b Admin Menu
 			li: ul.collapsible: li
-				each list
-					.collapsible-header: .black-text= startCase(grup)
-					a.collapsible-body(href='/peta/{{grup}}/{{item}}')= startCase(item)
+				each i in list
+					.collapsible-header: .black-text= startCase(i.grup)
+					each j in i.items
+						a.collapsible-body(href='/peta/{{i.grup}}/{{j}}')= startCase(j)
 
 template(name='beranda'): .container
 	h5 Beranda
