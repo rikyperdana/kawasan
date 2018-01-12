@@ -17,6 +17,7 @@ template(name='menu')
 					.collapsible-header: .black-text= startCase(i.grup)
 					each j in i.items
 						a.collapsible-body(href='/peta/{{i.grup}}/{{j}}')= startCase(j)
+					a.collapsible-body(href='/peta/{{i.grup}}') Semua
 
 template(name='beranda'): .container
 	h5 Beranda

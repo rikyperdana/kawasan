@@ -34,10 +34,8 @@ if Meteor.isClient
 						layer.on
 							mouseover: (event) ->
 								event.target.setStyle
-									weight: 5
-									color: 'white'
+									weight: 3
 									dashArray: ''
-									fillOpacity: 0.7
 								event.target.bringToFront()
 							mouseout: (event) ->
 								geojson.resetStyle event.target
@@ -63,5 +61,6 @@ if Meteor.isClient
 				if split[2] is 'geojson'
 					name = grup: split[0], item: split[1]
 					doc = _.assign name, JSON.parse reader.result
-					Meteor.call 'import', 'geojsons', name, doc
+					Meteor.call 'import', 'geojsons', name, doc, (err, res) ->
+						res and Materialize.toast 'Unggah Berhasil', 3000, 'orange'
 			reader.readAsText file, 'UTF-8'
