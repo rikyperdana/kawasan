@@ -15,12 +15,14 @@ if Meteor.isClient
 		fillColor = (val) ->
 			find = _.find colors, (i) -> i.item is val
 			find.color
+		baseMaps = Topo: L.tileLayer.provider 'OpenTopoMap'
+		overLays = {}
 		map = L.map 'peta',
 			center: [0.5, 101]
 			zoom: 8
 			zoomControl: false
-			layers: _.map coll.geojsons.find().fetch(), (i) ->
-				L.geoJson i,
+			layers:	_.map coll.geojsons.find().fetch(), (i) ->
+				geojson = L.geoJson i,
 					style: (feature) ->
 						fillColor: fillColor feature.properties.F_Prbhn
 						weight: 2
@@ -31,18 +33,26 @@ if Meteor.isClient
 					onEachFeature: (feature, layer) ->
 						layer.on
 							mouseover: (event) ->
-								console.log 'masuk'
+								event.target.setStyle
+									weight: 5
+									color: 'white'
+									dashArray: ''
+									fillOpacity: 0.7
+								event.target.bringToFront()
 							mouseout: (event) ->
-								console.log 'keluar'
+								geojson.resetStyle event.target
 							click: (event) ->
-								console.log 'klik'
+								map.fitBounds event.target.getBounds()
 						layer.bindPopup ->
 							content = ''
 							for key, val of feature.properties
 								content += '<b>Data '+key+'</b>'+': '+val+'</br>'
 							content
-		topo = L.tileLayer.provider 'OpenTopoMap'
-		topo.addTo map
+				overLays[_.startCase(i.item)] = geojson
+				geojson
+		baseMaps.Topo.addTo map
+		layerControl = L.control.layers baseMaps, overLays
+		layerControl.addTo map
 
 	Template.upload.events
 		'change :file': (event) ->
