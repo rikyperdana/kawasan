@@ -12,13 +12,37 @@ if Meteor.isClient
 		list: -> Session.get 'list'
 
 	Template.peta.onRendered ->
-		topo = L.tileLayer.provider 'OpenTopoMap'
-		lay1 = L.geoJson coll.geojsons.findOne()
+		fillColor = (val) ->
+			find = _.find colors, (i) -> i.item is val
+			find.color
 		map = L.map 'peta',
 			center: [0.5, 101]
 			zoom: 8
 			zoomControl: false
-			layers: [topo, lay1]
+			layers: _.map coll.geojsons.find().fetch(), (i) ->
+				L.geoJson i,
+					style: (feature) ->
+						fillColor: fillColor feature.properties.F_Prbhn
+						weight: 2
+						opacity: 1
+						color: 'white'
+						dashArray: '3'
+						fillOpacity: 0.7
+					onEachFeature: (feature, layer) ->
+						layer.on
+							mouseover: (event) ->
+								console.log 'masuk'
+							mouseout: (event) ->
+								console.log 'keluar'
+							click: (event) ->
+								console.log 'klik'
+						layer.bindPopup ->
+							content = ''
+							for key, val of feature.properties
+								content += '<b>Data '+key+'</b>'+': '+val+'</br>'
+							content
+		topo = L.tileLayer.provider 'OpenTopoMap'
+		topo.addTo map
 
 	Template.upload.events
 		'change :file': (event) ->

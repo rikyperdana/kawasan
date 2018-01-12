@@ -10,7 +10,8 @@ Router.route '/upload',
 Router.route '/peta/:grup?/:item?',
 	action: -> this.render 'peta'
 	waitOn: -> if Meteor.isClient
-		sel = grup: this.params.grup, item: this.params.item
+		sel = grup: this.params.grup
+		this.params.item and sel.item = this.params.item
 		Meteor.subscribe 'coll', 'geojsons', sel, {}
 
 coll.geojsons = new Meteor.Collection 'geojsons'
