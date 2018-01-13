@@ -12,12 +12,13 @@ template(name='menu')
 			li: a Login
 		ul.fixed.side-nav
 			li.grey.lighten-2: a: b Admin Menu
-			li: ul.collapsible: li
+			ul.collapsible.collapsible-accordion
 				each i in list
-					.collapsible-header: .black-text= startCase(i.grup)
-					each j in i.items
-						a.collapsible-body(href='/peta/{{i.grup}}/{{j}}')= startCase(j)
-					a.collapsible-body(href='/peta/{{i.grup}}') Semua
+					li
+						a.collapsible-header(href='/peta/{{i.grup}}')= startCase(i.grup)
+						.collapsible-body: ul
+							each j in i.items
+								li: a(href='/peta/{{i.grup}}/{{j}}')= upperCase(j)
 
 template(name='beranda'): .container
 	h5 Beranda
@@ -34,3 +35,10 @@ template(name='admin'): .container
 				type='text'
 				placeholder='Unggah geojson'
 			)
+
+template(name='login'): .container
+	h5 Login Admin
+	form
+		input(name= 'username' placeholder= 'Username')
+		input(name= 'password' placeholder= 'Password' type= 'password')
+		input.btn(type= 'submit' value= 'Login')

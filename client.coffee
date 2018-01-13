@@ -1,7 +1,7 @@
 if Meteor.isClient
 
-	Template.registerHelper 'startCase', (val) ->
-		_.startCase val
+	Template.registerHelper 'startCase', (val) -> _.startCase val
+	Template.registerHelper 'upperCase', (val) -> _.upperCase val
 
 	Template.menu.onRendered ->
 		$('.collapsible').collapsible()
@@ -49,8 +49,7 @@ if Meteor.isClient
 			zoom: 8
 			zoomControl: false
 			layers: [bases..., layers...]
-		layerControl = L.control.layers baseMaps, overLays
-		layerControl.addTo map
+		L.control.layers(baseMaps, overLays).addTo map
 
 	Template.admin.events
 		'change :file': (event) ->
@@ -64,3 +63,10 @@ if Meteor.isClient
 					Meteor.call 'import', 'geojsons', name, doc, (err, res) ->
 						res and Materialize.toast 'Unggah Berhasil', 3000, 'orange'
 			reader.readAsText file, 'UTF-8'
+
+	Template.login.events
+		'submit form': (event) ->
+			event.preventDefault()
+			obj = {}; _.map ['username', 'password'], (i) ->
+				obj[i] = event.target.children[i].value
+			Meteor.loginWithPassword _.values(obj)...

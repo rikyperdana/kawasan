@@ -4,8 +4,9 @@ Router.configure
 Router.route '/',
 	action: -> this.render 'beranda'
 
-Router.route '/admin',
-	action: -> this.render 'admin'
+_.map ['login', 'admin'], (i) ->
+	Router.route '/'+i,
+		action: -> this.render i
 
 Router.route '/peta/:grup?/:item?',
 	action: -> this.render 'peta'
