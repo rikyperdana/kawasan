@@ -29,3 +29,4 @@ iron:router
 bevanhunt:leaflet
 session
 gwendall:body-events
+herrhelms:meteor-leaflet-locatecontrol

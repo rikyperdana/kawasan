@@ -50,6 +50,7 @@ if Meteor.isClient
 			zoomControl: false
 			layers: [bases..., layers...]
 		L.control.layers(baseMaps, overLays).addTo map
+		L.control.locate(position:'topright').addTo map
 
 	Template.admin.events
 		'change :file': (event) ->
@@ -67,6 +68,6 @@ if Meteor.isClient
 	Template.login.events
 		'submit form': (event) ->
 			event.preventDefault()
-			obj = {}; _.map ['username', 'password'], (i) ->
-				obj[i] = event.target.children[i].value
-			Meteor.loginWithPassword _.values(obj)...
+			creds = _.map ['username', 'password'], (i) ->
+				event.target.children[i].value
+			Meteor.loginWithPassword creds...
