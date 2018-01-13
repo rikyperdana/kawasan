@@ -15,44 +15,43 @@ if Meteor.isClient
 		fillColor = (val) ->
 			find = _.find colors, (i) -> i.item is val
 			find.color
+		layers = _.map coll.geojsons.find().fetch(), (i) ->
+			geojson = L.geoJson i,
+				style: (feature) ->
+					fillColor: fillColor feature.properties.F_Prbhn
+					weight: 2
+					opacity: 1
+					color: 'white'
+					dashArray: '3'
+					fillOpacity: 0.7
+				onEachFeature: (feature, layer) ->
+					layer.on
+						mouseover: (event) ->
+							event.target.setStyle
+								weight: 3
+								dashArray: ''
+							event.target.bringToFront()
+						mouseout: (event) ->
+							geojson.resetStyle event.target
+						click: (event) ->
+							map.fitBounds event.target.getBounds()
+					layer.bindPopup ->
+						content = ''
+						for key, val of feature.properties
+							content += '<b>Data '+key+'</b>'+': '+val+'</br>'
+						content
 		baseMaps = Topo: L.tileLayer.provider 'OpenTopoMap'
-		overLays = {}
+		items = _.map coll.geojsons.find().fetch(), (i) -> _.upperCase i.item
+		overLays = _.zipObject items, layers
 		map = L.map 'peta',
 			center: [0.5, 101]
 			zoom: 8
 			zoomControl: false
-			layers:	_.map coll.geojsons.find().fetch(), (i) ->
-				geojson = L.geoJson i,
-					style: (feature) ->
-						fillColor: fillColor feature.properties.F_Prbhn
-						weight: 2
-						opacity: 1
-						color: 'white'
-						dashArray: '3'
-						fillOpacity: 0.7
-					onEachFeature: (feature, layer) ->
-						layer.on
-							mouseover: (event) ->
-								event.target.setStyle
-									weight: 3
-									dashArray: ''
-								event.target.bringToFront()
-							mouseout: (event) ->
-								geojson.resetStyle event.target
-							click: (event) ->
-								map.fitBounds event.target.getBounds()
-						layer.bindPopup ->
-							content = ''
-							for key, val of feature.properties
-								content += '<b>Data '+key+'</b>'+': '+val+'</br>'
-							content
-				overLays[_.startCase(i.item)] = geojson
-				geojson
-		baseMaps.Topo.addTo map
+			layers: [baseMaps.Topo, layers...]
 		layerControl = L.control.layers baseMaps, overLays
 		layerControl.addTo map
 
-	Template.upload.events
+	Template.admin.events
 		'change :file': (event) ->
 			file = event.target.files[0]
 			reader = new FileReader()

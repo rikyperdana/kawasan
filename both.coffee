@@ -4,8 +4,8 @@ Router.configure
 Router.route '/',
 	action: -> this.render 'beranda'
 
-Router.route '/upload',
-	action: -> this.render 'upload'
+Router.route '/admin',
+	action: -> this.render 'admin'
 
 Router.route '/peta/:grup?/:item?',
 	action: -> this.render 'peta'
