@@ -15,7 +15,7 @@ if Meteor.isClient
 		fillColor = (val) ->
 			find = _.find colors, (i) -> i.item is val
 			find.color
-		layers = _.map coll.geojsons.find().fetch(), (i) -> L.geoJson i,
+		layers = _.map coll.geojsons.find().fetch(), (i) -> geojson = L.geoJson i,
 			style: (feature) ->
 				fillColor: fillColor feature.properties.F_Prbhn
 				weight: 2

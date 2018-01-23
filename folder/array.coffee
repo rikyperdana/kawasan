@@ -1,19 +1,19 @@
 @colors = [
 	item: 'KSA/KPA'
-	color: 'blue'
-,
-	item: 'APL'
-	color: 'orange'
-,
-	item: 'HL'
-	color: 'pink'
-,
-	item: 'HP'
 	color: 'purple'
 ,
-	item: 'HPK'
+	item: 'APL'
+	color: 'white'
+,
+	item: 'HL'
 	color: 'green'
 ,
+	item: 'HP'
+	color: 'yellow'
+,
+	item: 'HPK'
+	color: 'pink'
+,
 	item: 'HPT'
-	color: 'teal'
+	color: '#33e72d'
 ]
