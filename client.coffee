@@ -17,6 +17,9 @@ if Meteor.isClient
 	Template.menu.events
 		'click #logout': -> Meteor.logout()
 
+	Template.beranda.onRendered ->
+		$('.slider').slider height: 900
+
 	Template.peta.onRendered ->
 		fillColor = (val) ->
 			find = _.find colors, (i) -> i.item is val
@@ -77,4 +80,5 @@ if Meteor.isClient
 			event.preventDefault()
 			creds = _.map ['username', 'password'], (i) ->
 				event.target.children[i].value
-			Meteor.loginWithPassword creds...
+			Meteor.loginWithPassword creds..., (err) ->
+				unless err then Router.go '/'
