@@ -12,7 +12,7 @@ template(name='menu')
 			unless currentUser
 				li: a(href='/login') Login
 			else
-				li: a= currentUser.username
+				li: a(href='/admin')= currentUser.username
 				li: a#logout Logout
 		ul.fixed.side-nav.grey.lighten-2
 			li.grey.lighten-1: a: b Menu Peta
@@ -35,6 +35,7 @@ template(name='beranda')
 template(name='peta'): #peta
 
 template(name='admin'): .container
+	br
 	.file-field.input-field
 		.btn
 			span Unggah Peta
