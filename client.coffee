@@ -1,5 +1,8 @@
 if Meteor.isClient
 
+	Router.onAfterAction ->
+		Router.go '/' if currentRoute() is 'admin' and not Meteor.userId()
+
 	Template.registerHelper 'startCase', (val) -> _.startCase val
 	Template.registerHelper 'upperCase', (val) -> _.upperCase val
 
@@ -10,6 +13,9 @@ if Meteor.isClient
 
 	Template.menu.helpers
 		list: -> Session.get 'list'
+
+	Template.menu.events
+		'click #logout': -> Meteor.logout()
 
 	Template.peta.onRendered ->
 		fillColor = (val) ->
@@ -48,8 +54,9 @@ if Meteor.isClient
 			center: [0.5, 101]
 			zoom: 8
 			zoomControl: false
+			attributionControl: false
 			layers: [bases..., layers...]
-		L.control.layers(baseMaps, overLays).addTo map
+		L.control.layers(baseMaps, overLays, collapsed: false).addTo map
 		L.control.locate(position:'topright').addTo map
 
 	Template.admin.events
